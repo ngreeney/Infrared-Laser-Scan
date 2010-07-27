@@ -111,7 +111,12 @@ def laserScan1D(width,height,delta,peakArea,fileName):
         while h<=height:
             mC.moveTo(motor,w,h)
             time.sleep(3)
-            t,v=sRead.getData(scope,peakArea-scanRange,peakArea+scanRange)
+            t1,v1=sRead.getData(scope,peakArea-scanRange,peakArea+scanRange)
+            time.sleep(1)
+            t2,v2=sRead.getData(scope,peakArea-scanRange,peakArea+scanRange)
+            
+            t=[np.average([t1[x],t2[x]]) for x in range(len(t1))]
+            v=[np.average([v1[x],v2[x]]) for x in range(len(v1))]
             
             if h==0 and w==0:
                 tValues=[t]
