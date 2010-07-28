@@ -1,17 +1,18 @@
 import visa as v
 import numpy as np
 import matplotlib.pyplot as plt
+import time as time
  
 #min and max are sample numbers not time measurements
 #far left is 1 and far right is 10000
-def scopeRead(min=1,max=10000):
+def scopeRead(min=1,max=10000,numSample=2):
     #define and connect to the scope lepton
     scope=v.instrument("TCPIP::138.67.12.235::INSTR")
  
     #set the info that you want to get from the scope
     setParam(scope,min,max)
     #get the info you asked for
-    X,Y=getData(scope,min,max)
+    X,Y=avgData(scope,min,max,numSample)
  
  
     plt.plot(X,Y)
@@ -47,3 +48,39 @@ def getData(scope,min,max):
     dataX=((dataX*Xscaling)+Xzero)*1E6
     
     return dataX,dataY
+
+def avgData(scope,min,max,numSample):
+    
+    XX=np.array([])
+    YY=np.array([])
+    i=0
+    while i<numSample:
+        x,y=getData(scope,min,max)
+        
+        if i==0:
+            XX=[x]
+            YY=[y]
+        else:
+            XX=np.append(XX,[x],axis=0)
+            YY=np.append(YY,[y],axis=0)
+        
+#        plt.plot(XX[i],YY[i])
+        time.sleep(0.167)
+        i=i+1
+   
+    Y=YY[0]
+    X=XX[0]
+    
+    j=0
+    while j<len(XX[0]):
+        X[j]=np.average([XX[i][j] for i in range(len(XX))])
+        j=j+1
+    
+    j=0
+    while j<len(YY[0]):
+        Y[j]=np.average([YY[i][j] for i in range(len(YY))])
+        j=j+1
+    
+    plt.plot(X,Y)
+    
+    return X,Y
