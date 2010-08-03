@@ -206,6 +206,22 @@ def findPeak(dataX,dataY):
     peakX=dataX[peakInd]
     return peakX,peakY
 
+def searchPeak(dataX,dataY):
+    mean=np.mean(dataY)
+    std=np.std(dataY)
+    
+    
+    i=0
+    while ((dataY[i]<mean+std or dataY[i+1]-dataY[i]>0) and dataY>mean+std):
+        i=i+1
+    
+    while (dataY[i-1]-dataY[i]>0):
+        i=i-1
+    
+    return dataX[i],dataY[i]
+#    find index of first downslope with value above or below std
+#    move back to closest maxima
+
 #def findPeak(dataX,dataY):
 #    #find the max and min Y and then find the index that Y relates
 #    #to to get the time for that max
