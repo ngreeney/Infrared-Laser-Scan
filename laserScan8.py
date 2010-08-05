@@ -51,7 +51,7 @@ def laserScan2D(width,height,delta,peakArea,fileName):
             mC.moveTo(motor,w,h)
             time.sleep(0.5)
             x,y=sRead.getData(scope,peakArea-scanRange,peakArea+scanRange)
-            t,v=findPeak(x,y)
+            t,v=searchPeak(x,y)
             tValues[n,m]=t
             vValues[n,m]=v
             h=h+delta
@@ -212,7 +212,7 @@ def searchPeak(dataX,dataY):
     
     
     i=0
-    while ((dataY[i]<mean+std or dataY[i+1]-dataY[i]>0) and dataY[i]>mean+std):
+    while ((dataY[i]<mean+std or dataY[i+1]-dataY[i]>0) and dataY[i]>mean-std):
         i+=1
     
     while (dataY[i-1]-dataY[i]>0):
