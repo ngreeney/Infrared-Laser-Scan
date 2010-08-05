@@ -182,10 +182,10 @@ def makePlot1D(X,Y,titleName):
     while n<X.shape[0]:
         plt.plot(X[n],Y[n]-delta*n)
         
-#        tPeaks[n],vPeaks[n]=findPeak(X[n],Y[n]-delta*n)
+        tPeaks[n],vPeaks[n]=searchPeak(X[n],Y[n]-delta*n)
         n=n+1
     
-#    plt.plot(tPeaks,vPeaks)
+    plt.plot(tPeaks,vPeaks)
     
     plt.title(titleName)
 
@@ -212,11 +212,11 @@ def searchPeak(dataX,dataY):
     
     
     i=0
-    while ((dataY[i]<mean+std or dataY[i+1]-dataY[i]>0) and dataY>mean+std):
-        i=i+1
+    while ((dataY[i]<mean+std or dataY[i+1]-dataY[i]>0) and dataY[i]>mean+std):
+        i+=1
     
     while (dataY[i-1]-dataY[i]>0):
-        i=i-1
+        i-=1
     
     return dataX[i],dataY[i]
 #    find index of first downslope with value above or below std

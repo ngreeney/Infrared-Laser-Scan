@@ -18,6 +18,8 @@ def scopeRead(min=1,max=10000,numSample=2):
     plt.plot(X,Y)
     #close connection to free up instrument
     scope.close()
+    
+    return X,Y
  
  
 def setParam(scope,min,max):
